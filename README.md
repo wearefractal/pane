@@ -1,19 +1,21 @@
-**Nothing here yet**
+**pane is a WebKit binding for node**
 
 
 ## Installation
     
-To install APPNAME, use [npm](http://github.com/isaacs/npm):
-
-    $ npm install -g APPNAME
+To install pane, use [npm](http://github.com/isaacs/npm):
+    $ sudo apt-get install libqtwebkit4
+    $ npm install pane
 
 ## Usage
 
-Nothing here yet
+```coffee-script
+Pane = require 'pane'
+```
 
 ## Examples
 
-You can view further examples in the [example folder.](https://github.com/wearefractal/APPNAME/tree/master/examples)
+You can view further examples in the [example folder.](https://github.com/wearefractal/pane/tree/master/examples)
 
 ## LICENSE
 

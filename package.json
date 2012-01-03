@@ -1,24 +1,27 @@
 {
-   "name":"APPNAME",
-   "description":"Nothing here yet",
+   "name":"pane",
+   "description":"WebKit for node",
    "version":"0.0.1",
-   "homepage":"http://github.com/wearefractal/APPNAME",
-   "repository":"git://github.com/wearefractal/APPNAME.git",
+   "homepage":"http://github.com/wearefractal/pane",
+   "repository":"git://github.com/wearefractal/pane.git",
    "author":"Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
-   "main":"./lib/main.coffee",
+   "main":"./index.js",
    
    "dependencies":{
       "coffee-script":"*",
-      "node-log":"*",
-      "protege":"*"
+      "node-log":"*"
    },
    "engines":{
       "node":">= 0.4.0"
    },
+   "scripts":{
+        "install": "node-waf configure build",
+        "test": "node-waf configure build && spex run"
+  },
    "licenses":[
       {
          "type":"MIT",
-         "url":"http://github.com/wearefractal/APPNAME/raw/master/LICENSE"
+         "url":"http://github.com/wearefractal/pane/raw/master/LICENSE"
       }
    ]
 }
