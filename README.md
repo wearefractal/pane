@@ -1,10 +1,10 @@
-**pane is a WebKit binding for node**
+**pane is a cross-platform GTK+ WebKit binding for node**
 
 
 ## Installation
     
 To install pane, use [npm](http://github.com/isaacs/npm):
-    $ sudo apt-get install libqtwebkit4
+    $ sudo apt-get install -y libgtk2.0-dev libglib2.0-dev libwebkitgtk-dev
     $ npm install pane
 
 ## Usage

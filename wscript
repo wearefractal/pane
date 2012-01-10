@@ -1,4 +1,5 @@
-VERSION = "0.0.1"
+from os import unlink, symlink, popen
+from os.path import exists
 
 
 def set_options(opt):
@@ -7,27 +8,17 @@ def set_options(opt):
 def configure(conf):
   conf.check_tool("compiler_cxx")
   conf.check_tool("node_addon")
-
-  #if not conf.env.LIB_QTWEBKIT: conf.fatal('QtWebKit not found - Semantik requires Qt >= 4.4')
-    
-  #if not conf.check(lib="libqtwebkit4", mandantory=True): conf.fatal("libqtwebkit4 not found on this system.")
+  conf.check_cfg(package='gtk+-2.0', args='--cflags --libs', uselib_store='GTK',)
+  conf.check_cfg(package='glib-2.0', args='--cflags --libs', uselib_store='GLIB')
+  conf.check_cfg(package='webkit-1.0', args='--cflags --libs', uselib_store='WEBKIT')
         
 def build(bld):
   obj = bld.new_task_gen("cxx", "shlib", "node_addon")
-
-  # Will generate build/default/pane.node
-  obj.target = "pane"
-
-  # compile all files in the src/ directory
+  obj.target = "WebKitWindow"
   obj.find_sources_in_dirs("src")
-
-# This is so that we have pane.node in the root
-# rather than doing require('./build/default/pane.node')
-def shutdown(bld):
-  # HACK to get binding.node out of build directory.
-  # better way to do this?
-  if Options.commands['clean']:
-    if exists('pane.node'): unlink('pane.node')
-  else:
-    if exists('build/default/pane.node') and not exists('pane.node'):
-      symlink(getcwd()+'/build/default/pane.node', 'pane.node')
+  obj.uselib = "GTK GLIB WEBKIT"
+      
+def shutdown():
+  if not exists('WebKitWindow.node'):
+    if exists('build/Release/WebKitWindow.node'):
+      symlink('build/Release/WebKitWindow.node', 'WebKitWindow.node')
