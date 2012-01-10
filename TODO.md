@@ -2,8 +2,10 @@
 
 ### Minor
 
-  * Nothing here yet
+  * More window related bindings
 
 ### Major
 
-  * Nothing here yet
+  * Pane http server
+  * native EventEmitter overflow fix
+  * Fix/simplify g_signal -> EventEmitter bindings

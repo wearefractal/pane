@@ -13,9 +13,9 @@ To install pane, use [npm](http://github.com/isaacs/npm):
 ```coffee-script
 Pane = require 'pane'
 window = new Pane 
-  url: 'http://yoursite.com'
-  height: 300 # Default 250
-  width: 300 # Default 250
+  url: 'http://nodester.com/nopage'
+  height: 500 # Default 250
+  width: 800 # Default 250
   resizable: true # Default true
   scrollable: false # Default false
   
@@ -24,6 +24,8 @@ window.close()
 ```
 
 ## Examples
+
+![wat](http://i.imgur.com/QSQNu.png)
 
 You can view further examples in the [example folder.](https://github.com/wearefractal/pane/tree/master/examples)
 
