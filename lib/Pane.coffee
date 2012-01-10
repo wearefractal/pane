@@ -2,7 +2,7 @@
 WebKitWindow = require './WebKitWindow'
 
 class Pane extends EventEmitter
-  constructor: (@url, @height, @width, @resizable, @scrollable) ->
+  constructor: ({@url, @height, @width, @resizable, @scrollable}) ->
     throw "URL required" unless @url
     @height ?= 250
     @width ?= 250

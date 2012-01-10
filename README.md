@@ -4,6 +4,7 @@
 ## Installation
     
 To install pane, use [npm](http://github.com/isaacs/npm):
+
     $ sudo apt-get install -y libgtk2.0-dev libglib2.0-dev libwebkitgtk-dev
     $ npm install pane
 
@@ -11,6 +12,15 @@ To install pane, use [npm](http://github.com/isaacs/npm):
 
 ```coffee-script
 Pane = require 'pane'
+window = new Pane 
+  url: 'http://yoursite.com'
+  height: 300 # Default 250
+  width: 300 # Default 250
+  resizable: true # Default true
+  scrollable: false # Default false
+  
+window.open()
+window.close()
 ```
 
 ## Examples
