@@ -1,8 +1,13 @@
 sys = require 'util'
 Pane = require './lib/Pane'
 
-window1 = new Pane 'http://google.com', 200, 200, true, false
-console.log window1
+window1 = new Pane 
+  url: 'http://trycodex.nodester.com'
+  height: 300 # Default 250
+  width: 300 # Default 250
+  resizable: true # Default true
+  scrollable: false # Default false
+  
 window1.on 'open', -> 
   console.log 'window1 opened'
   window1.on 'close', -> 
