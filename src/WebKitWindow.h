@@ -28,7 +28,7 @@ class WebKitWindow : public ObjectWrap {
 
     /* SIGNALS */
     static void RefreshTitle(GtkWidget* widget);
-    static void Destroy(GtkWidget* widget);
+    static void Destroy(GtkWidget* widget, WebKitWindow* window);
 
     /* ACCESSORS */
     static Handle<Value> WindowTitleGetter(Local<String> property, const AccessorInfo &info);

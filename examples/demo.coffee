@@ -2,7 +2,7 @@ sys = require 'util'
 Pane = require '../lib/Pane'
 
 window1 = new Pane 
-  url: 'http://nodester.com/nopage'
+  url: 'http://google.com/'
   height: 500 # Default 250
   width: 800 # Default 250
   resizable: true # Default true
@@ -16,6 +16,7 @@ window1.on 'close', ->
   
 window1.open();
 
+console.log("Event loop restored!");
 ###
 window2 = new Pane 'http://github.com', 200, 200, false, false
 window2.on 'open', -> 

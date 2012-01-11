@@ -54,14 +54,15 @@ Handle<Value> WebKitWindow::New (const Arguments& args)
     gtk_init(NULL, NULL);
 
     WebKitWindow *window = new WebKitWindow;
-
+    window->Wrap(args.This());
     //Create UI components
     window->window_ = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     window->view_ = webkit_web_view_new();
 
     //Connect signals from UI components to JS events
-    g_signal_connect(G_OBJECT(window->window_), "destroy", G_CALLBACK(window->Destroy), NULL);
-    g_signal_connect(G_OBJECT(window->view_), "title-changed", G_CALLBACK(window->RefreshTitle), NULL);
+    //g_signal_connect (window->window_, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(G_OBJECT(window->window_), "destroy", G_CALLBACK(window->Destroy), window);
+    g_signal_connect(window->view_, "title-changed", G_CALLBACK(window->RefreshTitle), window);
 
     //Add components to window
     gtk_container_add(GTK_CONTAINER(window->window_), window->view_);
@@ -74,13 +75,15 @@ Handle<Value> WebKitWindow::New (const Arguments& args)
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(window->view_), *url);
     gtk_widget_show_all(window->window_);
 
-    window->Wrap(args.This());
     return scope.Close(args.This());
 }
 
 /* FUNCTIONS */
 async_rtn ASYNC_GTK_MAIN (uv_work_t *req) {
-  gtk_main();
+  //gtk_main();
+  while(true){
+    gtk_main_iteration_do(true);
+  }
   RETURN_ASYNC;
 }
 
@@ -95,9 +98,9 @@ Handle<Value> WebKitWindow::Open(const Arguments &args)
     WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
     assert(window);
     window->Emit("open", 0, NULL);
-    gtk_main();
+    //gtk_main();
     //TODO: Prevent this from crashing
-    //BEGIN_ASYNC(NULL, ASYNC_GTK_MAIN, ASYNC_GTK_MAIN_AFTER);
+    BEGIN_ASYNC(NULL, ASYNC_GTK_MAIN, ASYNC_GTK_MAIN_AFTER);
     return scope.Close(v8::Undefined());
 }
 Handle<Value> WebKitWindow::Close(const Arguments &args)
@@ -106,7 +109,6 @@ Handle<Value> WebKitWindow::Close(const Arguments &args)
     WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
     assert(window);
     window->Emit("close", 0, NULL);
-    //Exit GTK main loop
     gtk_main_quit();
     return scope.Close(v8::Undefined());
 }
@@ -124,17 +126,20 @@ Handle<Value> WebKitWindow::WindowTitleGetter (Local<String> property, const Acc
 
 
 /* SIGNAL HANDLING */
-void WebKitWindow::Destroy (GtkWidget* widget)
+void WebKitWindow::Destroy (GtkWidget* widget, WebKitWindow* window)
 {
     HandleScope scope;
-    //this->Emit("close", 0, NULL);
+    assert(window);
+    window->Emit("close", 0, NULL);
+    gtk_main_quit();
 }
 
-void WebKitWindow::RefreshTitle (GtkWidget* widget)
+void WebKitWindow::RefreshTitle (GtkWidget* widget, WebKitWindow* window)
 {
     HandleScope scope;
-    //Set title of web_view parent (main window) to webpage title
-    gtk_window_set_title(GTK_WINDOW(widget->parent), webkit_web_view_get_title(WEBKIT_WEB_VIEW(widget)));
+    assert(window);
+    //Set title of main window to web_view title
+    gtk_window_set_title(GTK_WINDOW(window->window_), webkit_web_view_get_title(WEBKIT_WEB_VIEW(window->view_)));
 }
 
 /* MISC */
@@ -181,6 +186,7 @@ bool WebKitWindow::Emit(const char* event, int argCount, Handle<Value> emitArgs[
     }
     return true;
 }
+
 
 extern "C" {
     static void init (Handle<Object> target)
