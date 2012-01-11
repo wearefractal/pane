@@ -37,6 +37,7 @@
 
 ### Major
 
+  * VisualStudio pre-build for os.platform() win32
   * Pane http server
   * native EventEmitter overflow fix
   * Fix/simplify g_signal -> EventEmitter bindings
