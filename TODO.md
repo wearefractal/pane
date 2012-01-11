@@ -32,6 +32,7 @@
   * webkit_web_view_load_html_string
   * webkit_web_view_reload
   * webkit_web_view_get_title
+  * webkit_web_view_execute_script
   * gtk_window icon update with webkit_web_view_get_icon_uri
 
 ### Major
