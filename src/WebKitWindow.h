@@ -27,7 +27,7 @@ class WebKitWindow : public ObjectWrap {
     static Handle<Value> Open(const Arguments &args);
 
     /* SIGNALS */
-    static void RefreshTitle(GtkWidget* widget);
+    static void RefreshTitle(GtkWidget* widget, WebKitWindow* window);
     static void Destroy(GtkWidget* widget, WebKitWindow* window);
 
     /* ACCESSORS */
@@ -41,5 +41,11 @@ class WebKitWindow : public ObjectWrap {
     GtkWidget* window_;
     GtkWidget* view_;
 };
+
+struct Baton {
+    uv_work_t request;
+};
+void GTKWork(uv_work_t* req);
+void GTKAfter(uv_work_t* req);
 
 #endif  // WEBKITWINDOW_H_

@@ -79,29 +79,21 @@ Handle<Value> WebKitWindow::New (const Arguments& args)
 }
 
 /* FUNCTIONS */
-async_rtn ASYNC_GTK_MAIN (uv_work_t *req) {
-  //gtk_main();
-  while(true){
-    gtk_main_iteration_do(true);
-  }
-  RETURN_ASYNC;
-}
-
-async_rtn ASYNC_GTK_MAIN_AFTER (uv_work_t *req) {
-  printf("ASYNC_GTK_MAIN_AFTER\n");
-  RETURN_ASYNC_AFTER;
-}
 
 Handle<Value> WebKitWindow::Open(const Arguments &args)
 {
     HandleScope scope;
     WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
     assert(window);
-    window->Emit("open", 0, NULL);
     //gtk_main();
-    //TODO: Prevent this from crashing
-    BEGIN_ASYNC(NULL, ASYNC_GTK_MAIN, ASYNC_GTK_MAIN_AFTER);
-    return scope.Close(v8::Undefined());
+
+    Baton* baton = new Baton();
+    baton->request.data = baton;
+    int status = uv_queue_work(uv_default_loop(), &baton->request, GTKWork, GTKAfter);
+    assert(status == 0);
+    window->Emit("open", 0, NULL);
+
+    return scope.Close(Undefined());
 }
 Handle<Value> WebKitWindow::Close(const Arguments &args)
 {
@@ -110,7 +102,7 @@ Handle<Value> WebKitWindow::Close(const Arguments &args)
     assert(window);
     window->Emit("close", 0, NULL);
     gtk_main_quit();
-    return scope.Close(v8::Undefined());
+    return scope.Close(Undefined());
 }
 
 
@@ -185,6 +177,26 @@ bool WebKitWindow::Emit(const char* event, int argCount, Handle<Value> emitArgs[
         FatalException(try_catch);
     }
     return true;
+}
+
+/* GTK EVENT LOOP */
+
+void GTKWork(uv_work_t* req) {
+    Baton* baton = static_cast<Baton*>(req->data);
+    while(true){
+        if (gtk_events_pending()){
+            gtk_main_iteration();
+        }
+
+    }
+    printf("GTK loop done\n");
+}
+
+void GTKAfter(uv_work_t* req) {
+    HandleScope scope;
+    Baton* baton = static_cast<Baton*>(req->data);
+    printf("Async loop done\n");
+    delete baton;
 }
 
 
