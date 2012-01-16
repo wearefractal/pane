@@ -5,7 +5,7 @@
   * gtk_window_iconify
   * gtk_window_deiconify
   * gtk_window_set_decorated
-  * gtk_window_get_decorated
+  * gtk_window_get_decoratedn
   * gtk_window_set_skip_taskbar_hint
   * gtk_window_get_skip_taskbar_hint
   * gtk_window_set_icon

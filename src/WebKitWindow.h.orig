@@ -28,10 +28,6 @@ public:
     static Handle<Value> Open(const Arguments &args);
     static Handle<Value> Reload(const Arguments &args);
     static Handle<Value> Move(const Arguments &args);
-    static Handle<Value> DisablePlugins(const Arguments &args);
-    static Handle<Value> EnablePlugins(const Arguments &args);
-    static Handle<Value> DisableWebGL(const Arguments &args);
-    static Handle<Value> EnableWebGL(const Arguments &args);
     static Handle<Value> SetMaximized(const Arguments &args);
     static Handle<Value> SetFullscreen(const Arguments &args);
     static Handle<Value> SetUrl(const Arguments &args);
@@ -47,19 +43,19 @@ public:
     static Handle<Value> GetFocused(const Arguments &args);
 
     /* SIGNALS */
-    static void ConsoleMessage(GtkWidget *widget, const gchar *message, unsigned int line, const gchar *sourceId, WebKitWindow *window);
-    static void RefreshTitle(GtkWidget *widget, GParamSpec *pspec, WebKitWindow *window);
-    static void Destroy(GtkWidget *widget, WebKitWindow *window);
+    static void ConsoleMessage(GtkWidget* widget, const gchar* message, unsigned int line, const gchar* sourceId, WebKitWindow* window);
+    static void RefreshTitle(GtkWidget* widget, GParamSpec* pspec, WebKitWindow* window);
+    static void Destroy(GtkWidget* widget, WebKitWindow* window);
 
     /* MISC */
-    bool Emit(const char *event, int argc, Handle<Value> argv[]);
+    bool Emit(const char* event, int argc, Handle<Value> argv[]);
 
 private:
     static Handle<Value> New(const Arguments &args);
     static void run_loop();
     static gboolean quit_loop();
-    GtkWidget *window_;
-    GtkWidget *view_;
+    GtkWidget* window_;
+    GtkWidget* view_;
 };
 
 #endif  // WEBKITWINDOW_H_

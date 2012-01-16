@@ -24,12 +24,6 @@ void WebKitWindow::Initialize(Handle<Object> target)
     //TODO: Implement these
     NODE_SET_PROTOTYPE_METHOD(s_ct, "reload", Reload);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "move", Move);
-
-    NODE_SET_PROTOTYPE_METHOD(s_ct, "disablePlugins", DisablePlugins);
-    NODE_SET_PROTOTYPE_METHOD(s_ct, "enablePlugins", EnablePlugins);
-    NODE_SET_PROTOTYPE_METHOD(s_ct, "disableWebGL", DisableWebGL);
-    NODE_SET_PROTOTYPE_METHOD(s_ct, "enableWebGL", EnableWebGL);
-
     NODE_SET_PROTOTYPE_METHOD(s_ct, "setMaximized", SetMaximized);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "setFullscreen", SetFullscreen);
 
@@ -53,7 +47,7 @@ void WebKitWindow::Initialize(Handle<Object> target)
     target->Set(NODE_SYMBOL("WebKitWindow"), t->GetFunction());
 }
 
-Handle<Value> WebKitWindow::New (const Arguments &args)
+Handle<Value> WebKitWindow::New (const Arguments& args)
 {
     HandleScope scope;
     if (!args.IsConstructCall())
@@ -62,17 +56,7 @@ Handle<Value> WebKitWindow::New (const Arguments &args)
     }
 
     //Initialize glib threading support and libgtk
-    if (!g_thread_supported())
-    {
-        g_thread_init(NULL);
-    }
     gtk_init(NULL, NULL);
-
-    //Tell glib to shut up
-    g_log_set_handler("Gtk", G_LOG_LEVEL_WARNING, (GLogFunc)gtk_false, NULL);
-    g_log_set_handler("Gtk", G_LOG_LEVEL_MESSAGE, (GLogFunc)gtk_false, NULL);
-    g_log_set_handler("Gtk", G_LOG_LEVEL_INFO, (GLogFunc)gtk_false, NULL);
-    g_log_set_handler("Gtk", G_LOG_LEVEL_DEBUG, (GLogFunc)gtk_false, NULL);
 
     WebKitWindow *window = new WebKitWindow;
     window->Wrap(args.This());
@@ -134,50 +118,6 @@ Handle<Value> WebKitWindow::Move(const Arguments &args)
     gtk_window_move(GTK_WINDOW(window->window_), x, y);
     return scope.Close(args.This());
 }
-Handle<Value> WebKitWindow::EnablePlugins(const Arguments &args)
-{
-    HandleScope scope;
-    WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
-    assert(window);
-    assert(window->window_);
-    WebKitWebSettings *settings = webkit_web_view_get_settings(WEBKIT_WEB_VIEW(window->view_));
-    g_object_set(settings, "enable-plugins", TRUE, NULL);
-    webkit_web_view_set_settings(WEBKIT_WEB_VIEW(window->view_), settings);
-    return scope.Close(args.This());
-}
-Handle<Value> WebKitWindow::DisablePlugins(const Arguments &args)
-{
-    HandleScope scope;
-    WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
-    assert(window);
-    assert(window->window_);
-    WebKitWebSettings *settings = webkit_web_view_get_settings(WEBKIT_WEB_VIEW(window->view_));
-    g_object_set(settings, "enable-plugins", FALSE, NULL);
-    webkit_web_view_set_settings(WEBKIT_WEB_VIEW(window->view_), settings);
-    return scope.Close(args.This());
-}
-Handle<Value> WebKitWindow::EnableWebGL(const Arguments &args)
-{
-    HandleScope scope;
-    WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
-    assert(window);
-    assert(window->window_);
-    WebKitWebSettings *settings = webkit_web_view_get_settings(WEBKIT_WEB_VIEW(window->view_));
-    g_object_set(settings, "enable-webgl", TRUE, NULL);
-    webkit_web_view_set_settings(WEBKIT_WEB_VIEW(window->view_), settings);
-    return scope.Close(args.This());
-}
-Handle<Value> WebKitWindow::DisableWebGL(const Arguments &args)
-{
-    HandleScope scope;
-    WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
-    assert(window);
-    assert(window->window_);
-    WebKitWebSettings *settings = webkit_web_view_get_settings(WEBKIT_WEB_VIEW(window->view_));
-    g_object_set(settings, "enable-webgl", FALSE, NULL);
-    webkit_web_view_set_settings(WEBKIT_WEB_VIEW(window->view_), settings);
-    return scope.Close(args.This());
-}
 Handle<Value> WebKitWindow::SetMaximized(const Arguments &args)
 {
     HandleScope scope;
@@ -186,7 +126,7 @@ Handle<Value> WebKitWindow::SetMaximized(const Arguments &args)
     assert(window->window_);
     ARG_CHECK_BOOL(0, maximized);
     bool maximized = args[0]->BooleanValue();
-    if (maximized)
+    if(maximized)
     {
         gtk_window_maximize(GTK_WINDOW(window->window_));
     }
@@ -194,6 +134,7 @@ Handle<Value> WebKitWindow::SetMaximized(const Arguments &args)
     {
         gtk_window_unmaximize(GTK_WINDOW(window->window_));
     }
+    gtk_widget_show_all(window->window_);
     return scope.Close(args.This());
 }
 Handle<Value> WebKitWindow::SetFullscreen(const Arguments &args)
@@ -204,12 +145,7 @@ Handle<Value> WebKitWindow::SetFullscreen(const Arguments &args)
     assert(window->window_);
     ARG_CHECK_BOOL(0, fullscreen);
     bool fullscreen = args[0]->BooleanValue();
-
-    WebKitWebSettings *settings = webkit_web_view_get_settings(WEBKIT_WEB_VIEW(window->view_));
-    g_object_set(settings, "enable-fullscreen", TRUE, NULL);
-    webkit_web_view_set_settings(WEBKIT_WEB_VIEW(window->view_), settings);
-
-    if (fullscreen)
+    if(fullscreen)
     {
         gtk_window_fullscreen(GTK_WINDOW(window->window_));
     }
@@ -237,7 +173,7 @@ Handle<Value> WebKitWindow::GetTitle(const Arguments &args)
     assert(window);
     assert(window->window_);
     const gchar *title = gtk_window_get_title(GTK_WINDOW(window->window_));
-    if (!title)
+    if(!title)
     {
         return scope.Close(Null());
     }
@@ -275,7 +211,7 @@ Handle<Value> WebKitWindow::SetHtml(const Arguments &args)
     assert(window->view_);
     ARG_CHECK_STRING(0, html);
     String::Utf8Value html(args[0]->ToString());
-    webkit_web_view_load_string(WEBKIT_WEB_VIEW(window->view_), *html, "text/html", "UTF-8", NULL);
+    webkit_web_view_load_string(WEBKIT_WEB_VIEW(window->view_), *html, NULL, NULL, NULL);
     return scope.Close(args.This());
 }
 Handle<Value> WebKitWindow::ExecuteScript(const Arguments &args)
@@ -311,7 +247,7 @@ Handle<Value> WebKitWindow::GetSize(const Arguments &args)
     int width;
     GtkWindow *win = GTK_WINDOW(window->window_);
     gtk_window_get_size(win, &width, &height);
-    if (!height || !width)
+    if (!height|| !width)
     {
         return scope.Close(Null());
     }
@@ -354,7 +290,7 @@ Handle<Value> WebKitWindow::GetFocused(const Arguments &args)
 }
 
 /* SIGNAL HANDLING */
-void WebKitWindow::Destroy(GtkWidget *widget, WebKitWindow *window)
+void WebKitWindow::Destroy(GtkWidget* widget, WebKitWindow* window)
 {
     HandleScope scope;
     assert(window);
@@ -362,7 +298,7 @@ void WebKitWindow::Destroy(GtkWidget *widget, WebKitWindow *window)
     window->Emit("close", 0, NULL);
     quit_loop();
 }
-void WebKitWindow::ConsoleMessage(GtkWidget *widget, const gchar *message, unsigned int line, const gchar *source, WebKitWindow *window)
+void WebKitWindow::ConsoleMessage(GtkWidget* widget, const gchar* message, unsigned int line, const gchar* source, WebKitWindow* window)
 {
     HandleScope scope;
     assert(window);
@@ -374,7 +310,7 @@ void WebKitWindow::ConsoleMessage(GtkWidget *widget, const gchar *message, unsig
     window->Emit("console", 3, args);
 }
 
-void WebKitWindow::RefreshTitle(GtkWidget *widget, GParamSpec *pspec, WebKitWindow *window)
+void WebKitWindow::RefreshTitle(GtkWidget* widget, GParamSpec* pspec, WebKitWindow* window)
 {
     HandleScope scope;
     assert(window);
@@ -388,7 +324,7 @@ void WebKitWindow::RefreshTitle(GtkWidget *widget, GParamSpec *pspec, WebKitWind
 }
 
 /* MISC */
-bool WebKitWindow::Emit(const char *event, int argCount, Handle<Value> emitArgs[])
+bool WebKitWindow::Emit(const char* event, int argCount, Handle<Value> emitArgs[])
 {
     //return true; //Temporarily disabled
     HandleScope scope;
@@ -410,9 +346,9 @@ bool WebKitWindow::Emit(const char *event, int argCount, Handle<Value> emitArgs[
 
     //nEmitArgs = ['coolEvent', other args...]
     nEmitArgs[0] = String::New(event);
-    if (emitArgs != NULL)
+    if(emitArgs != NULL)
     {
-        for (int i = 0; i < argCount; i++)
+        for (int i=0; i < argCount; i++)
         {
             nEmitArgs[i + 1] = emitArgs[i];
         }
@@ -451,7 +387,7 @@ struct econtext
     ev_prepare pw;
     ev_check cw;
     ev_timer tw;
-    bool active;
+
     GMainContext *gc;
 };
 
@@ -475,7 +411,7 @@ static void prepare_cb (EV_P_ ev_prepare *w, int revents)
 
     g_main_context_prepare (ctx->gc, &ctx->maxpri);
 
-    while (ctx->afd < (ctx->nfd = g_main_context_query(
+    while (ctx->afd < (ctx->nfd = g_main_context_query  (
                                       ctx->gc,
                                       ctx->maxpri,
                                       &timeout,
@@ -487,12 +423,10 @@ static void prepare_cb (EV_P_ ev_prepare *w, int revents)
 
         ctx->afd = 1;
         while (ctx->afd < ctx->nfd)
-        {
-            ctx->afd <<= 1;
-        }
+        { ctx->afd <<= 1; }
 
-        ctx->pfd = (GPollFD *) malloc (ctx->afd * sizeof (GPollFD));
-        ctx->iow = (ev_io *) malloc (ctx->afd * sizeof (ev_io));
+        ctx->pfd = (GPollFD*) malloc (ctx->afd * sizeof (GPollFD));
+        ctx->iow = (ev_io*) malloc (ctx->afd * sizeof (ev_io));
     }
 
     for (i = 0; i < ctx->nfd; ++i)
@@ -517,7 +451,7 @@ static void prepare_cb (EV_P_ ev_prepare *w, int revents)
     if (timeout >= 0)
     {
         ev_timer_set (&ctx->tw, timeout * 1e-3, 0.);
-        ev_timer_start (EV_A_ & ctx->tw);
+        ev_timer_start (EV_A_ &ctx->tw);
     }
 }
 
@@ -545,14 +479,10 @@ static void check_cb (EV_P_ ev_check *w, int revents)
     }
 
     if (ev_is_active (&ctx->tw))
-    {
-        ev_timer_stop (EV_A_ & ctx->tw);
-    }
+    { ev_timer_stop (EV_A_ &ctx->tw); }
 
     if (ctx->nfd || GLIB_CHECK_VERSION (2, 30, 0))
-    {
-        g_main_context_check(ctx->gc, ctx->maxpri, ctx->pfd, ctx->nfd);
-    }
+    { g_main_context_check (ctx->gc, ctx->maxpri, ctx->pfd, ctx->nfd); }
 }
 
 static struct econtext default_context;
@@ -574,6 +504,11 @@ extern "C" {
     {
         HandleScope scope;
         WebKitWindow::Initialize(target);
+        g_log_set_handler("Gtk", G_LOG_LEVEL_WARNING, (GLogFunc) gtk_false, NULL);
+        if (!g_thread_supported())
+        {
+            g_thread_init(NULL);
+        }
         GMainContext *gc = g_main_context_default();
         struct econtext *ctx = &default_context;
 
@@ -583,7 +518,6 @@ extern "C" {
         ctx->afd = 0;
         ctx->iow = 0;
         ctx->pfd = 0;
-        ctx->active = false;
 
         ev_prepare_init (&ctx->pw, prepare_cb);
         ev_set_priority (&ctx->pw, EV_MINPRI);
