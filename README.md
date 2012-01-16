@@ -9,19 +9,21 @@ To install pane, use [npm](http://github.com/isaacs/npm):
 
 ## Dependencies
 
-### Ubuntu/Debian
+A full installer for each OS will be available soon.
 
-    $ sudo apt-get install -y libgtk2.0-dev libglib2.0-dev libwebkitgtk-dev
+### Ubuntu/Debian - Untested
 
-### Fedora/Red Hat
+    $ sudo apt-get install -y libgtk2.0-dev libglib2.0-dev libwebkitgtk-dev libev-dev
 
-    $ sudo yum install -y gtk+-devel gtk2-devel glib2-devel libwebkitgtk-devel
+### Fedora/Red Hat - Untested
+
+    $ sudo yum install -y gtk+-devel gtk2-devel glib2-devel libwebkitgtk-devel libev-devel
     
-### Windows
+### Windows - Untested
 
 Download and install [this.](http://downloads.sourceforge.net/project/gimp-win/Obsolete/GTK%2B/GTK%2B%202.10.13/gtk%2B-2.10.13-setup.exe?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fgimp-win%2Ffiles%2FObsolete%2FGTK%252B%2FGTK%252B%25202.10.13%2F&ts=1326269861&use_mirror=superb-dca2)
 
-### Mac OSX
+### Mac OSX - Untested
     curl -O http://downloads.sourceforge.net/project/gtk-osx/GTK-OSX%20Build/ige-mac-integration-0.9.8.tar.bz2?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fgtk-osx%2Ffiles%2F&ts=1326270289&use_mirror=iweb
     tar xzvf ige-mac-integration-0.9.8.tar.bz2
     cd ige-mac-integration-0.9.8

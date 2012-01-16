@@ -2,8 +2,8 @@
 #define WEBKITWINDOW_H_
 
 #include "node_defs.h"
-#include "node_async.h"
-#include <uv.h>
+#include <ev.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <v8.h>
 #include <node.h>
@@ -25,27 +25,36 @@ class WebKitWindow : public ObjectWrap {
     /* FUNCTIONS */
     static Handle<Value> Close(const Arguments &args);
     static Handle<Value> Open(const Arguments &args);
+    static Handle<Value> Reload(const Arguments &args);
+    static Handle<Value> Move(const Arguments &args);
+    static Handle<Value> SetMaximized(const Arguments &args);
+    static Handle<Value> SetFullscreen(const Arguments &args);
+    static Handle<Value> SetUrl(const Arguments &args);
+    static Handle<Value> GetUrl(const Arguments &args);
+    static Handle<Value> SetHtml(const Arguments &args);
+    static Handle<Value> ExecuteScript(const Arguments &args);
+    static Handle<Value> SetSize(const Arguments &args);
+    static Handle<Value> GetSize(const Arguments &args);
+    static Handle<Value> SetResizable(const Arguments &args);
+    static Handle<Value> GetResizable(const Arguments &args);
+    static Handle<Value> SetTitle(const Arguments &args);
+    static Handle<Value> GetTitle(const Arguments &args);
+    static Handle<Value> GetFocused(const Arguments &args);
 
     /* SIGNALS */
-    static void RefreshTitle(GtkWidget* widget, WebKitWindow* window);
+    static void ConsoleMessage(GtkWidget* widget, const gchar* message, unsigned int line, const gchar* sourceId, WebKitWindow* window);
+    static void RefreshTitle(GtkWidget* widget, GParamSpec* pspec, WebKitWindow* window);
     static void Destroy(GtkWidget* widget, WebKitWindow* window);
-
-    /* ACCESSORS */
-    static Handle<Value> WindowTitleGetter(Local<String> property, const AccessorInfo &info);
 
     /* MISC */
     bool Emit(const char* event, int argc, Handle<Value> argv[]);
 
   private:
     static Handle<Value> New(const Arguments &args);
+    static void run_loop();
+    static gboolean quit_loop();
     GtkWidget* window_;
     GtkWidget* view_;
 };
-
-struct Baton {
-    uv_work_t request;
-};
-void GTKWork(uv_work_t* req);
-void GTKAfter(uv_work_t* req);
 
 #endif  // WEBKITWINDOW_H_

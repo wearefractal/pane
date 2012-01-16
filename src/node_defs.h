@@ -1,11 +1,13 @@
-// Copyright 2011 Mariano Iglesias <mgiglesias@gmail.com>
+// Some of this stuff is Copyright 2011 Mariano Iglesias <mgiglesias@gmail.com>
 #ifndef NODE_DEFS_H_
 #define NODE_DEFS_H_
 
 #include <node.h>
 
+#define CString(value) (*value ? *value : "<string conversion failed>")
 #define NODE_CONSTANT(constant) v8::Integer::New(constant)
 #define NODE_PERSISTENT_SYMBOL(s) v8::Persistent<v8::String>::New(v8::String::NewSymbol(s))
+#define NODE_SYMBOL(s) v8::String::NewSymbol(s)
 
 #define NODE_ADD_PROTOTYPE_METHOD(templ, name, callback)                  \
 do {                                                                      \
