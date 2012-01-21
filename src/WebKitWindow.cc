@@ -84,14 +84,8 @@ Handle<Value> WebKitWindow::RunQT(const Arguments &args)
     WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
     assert(window);
     assert(window->app_);
-    ARG_CHECK_FUNCTION(0, cb);
-    Persistent<Function> cb = Persistent<Function>::New(cb);
     window->app_->exec();
-    printf("fixed!\n");
-    Local<Value> argv[1];
-    argv[0] = args.This();
-    cb->Call(Context::GetCurrent()->Global(), 1, argv);
-    cb.Dispose();
+    window->Emit("close", 0, NULL);
     return scope.Close(args.This());
 }
 
