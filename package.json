@@ -1,14 +1,16 @@
 {
    "name":"pane",
-   "description":"WebKit for node",
-   "version":"0.0.1",
+   "description":"WebKit UI for node",
+   "version":"0.0.2",
    "homepage":"http://github.com/wearefractal/pane",
    "repository":"git://github.com/wearefractal/pane.git",
    "author":"Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
    "main":"./index.js",
    
    "dependencies":{
-      "coffee-script":"*",
+      "coffee-script":"*"
+   },
+   "devDependencies":{
       "node-log":"*"
    },
    "engines":{

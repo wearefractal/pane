@@ -8,15 +8,16 @@ def set_options(opt):
 def configure(conf):
   conf.check_tool("compiler_cxx")
   conf.check_tool("node_addon")
-  conf.check_cfg(package='gtk+-2.0', args='--cflags --libs', uselib_store='GTK',)
-  conf.check_cfg(package='glib-2.0', args='--cflags --libs', uselib_store='GLIB')
-  conf.check_cfg(package='webkit-1.0', args='--cflags --libs', uselib_store='WEBKIT')
+  conf.check_cfg(package='QtCore', args='--cflags --libs', uselib_store='QtCore', mandatory=True)
+  conf.check_cfg(package='QtGui', args='--cflags --libs', uselib_store='QtGui', mandatory=True)
+  conf.check_cfg(package='QtWebKit', args='--cflags --libs', uselib_store='QtWebKit', mandatory=True)
         
 def build(bld):
   obj = bld.new_task_gen("cxx", "shlib", "node_addon")
+  obj.cxxflags = ['-DQT_NO_DEBUG', '-DQT_GUI_LIB', '-DQT_CORE_LIB', '-DQT_SHARED']
   obj.target = "WebKitWindow"
   obj.find_sources_in_dirs("src")
-  obj.uselib = "GTK GLIB WEBKIT"
+  obj.uselib = "QtCore QtGui QtWebKit"
       
 def shutdown():
   if not exists('WebKitWindow.node'):

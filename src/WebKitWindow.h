@@ -1,15 +1,17 @@
 #ifndef WEBKITWINDOW_H_
 #define WEBKITWINDOW_H_
 
-#include "node_defs.h"
-#include <ev.h>
-#include <stdlib.h>
-#include <assert.h>
 #include <v8.h>
 #include <node.h>
-#include <gtk/gtk.h>
-#include <webkit/webkitwebview.h>
-#include <node_object_wrap.h>
+#include "node_defs.h"
+
+#include <QApplication>
+#include <QMainWindow>
+#include <QtGui>
+#include <QtWebKit>
+
+#include <stdlib.h>
+#include <assert.h>
 
 using namespace v8;
 using namespace node;
@@ -20,18 +22,14 @@ public:
     WebKitWindow() : ObjectWrap() {}
     ~WebKitWindow() {}
     static Persistent<FunctionTemplate> s_ct;
-    static Persistent<String> emit_symbol;
     static void Initialize(Handle<Object> target);
 
     /* FUNCTIONS */
-    static Handle<Value> Close(const Arguments &args);
+    static Handle<Value> RunQT(const Arguments &args);
     static Handle<Value> Open(const Arguments &args);
+    static Handle<Value> Close(const Arguments &args);
     static Handle<Value> Reload(const Arguments &args);
     static Handle<Value> Move(const Arguments &args);
-    static Handle<Value> DisablePlugins(const Arguments &args);
-    static Handle<Value> EnablePlugins(const Arguments &args);
-    static Handle<Value> DisableWebGL(const Arguments &args);
-    static Handle<Value> EnableWebGL(const Arguments &args);
     static Handle<Value> SetMaximized(const Arguments &args);
     static Handle<Value> SetFullscreen(const Arguments &args);
     static Handle<Value> SetUrl(const Arguments &args);
@@ -47,19 +45,16 @@ public:
     static Handle<Value> GetFocused(const Arguments &args);
 
     /* SIGNALS */
-    static void ConsoleMessage(GtkWidget *widget, const gchar *message, unsigned int line, const gchar *sourceId, WebKitWindow *window);
-    static void RefreshTitle(GtkWidget *widget, GParamSpec *pspec, WebKitWindow *window);
-    static void Destroy(GtkWidget *widget, WebKitWindow *window);
-
+    //static void ConsoleMessage(GtkWidget *widget, const gchar *message, unsigned int line, const gchar *sourceId, WebKitWindow *window);
+    static void RefreshTitle(WebKitWindow *window);
     /* MISC */
     bool Emit(const char *event, int argc, Handle<Value> argv[]);
 
 private:
     static Handle<Value> New(const Arguments &args);
-    static void run_loop();
-    static gboolean quit_loop();
-    GtkWidget *window_;
-    GtkWidget *view_;
+    QApplication *app_;
+    QMainWindow *window_;
+    QWebView *view_;
 };
 
 #endif  // WEBKITWINDOW_H_

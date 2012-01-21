@@ -2,9 +2,7 @@
 #ifndef NODE_DEFS_H_
 #define NODE_DEFS_H_
 
-#include <node.h>
-
-#define CString(value) (*value ? *value : "<string conversion failed>")
+#define CString(value) value.toAscii().data()
 #define NODE_CONSTANT(constant) v8::Integer::New(constant)
 #define NODE_PERSISTENT_SYMBOL(s) v8::Persistent<v8::String>::New(v8::String::NewSymbol(s))
 #define NODE_SYMBOL(s) v8::String::NewSymbol(s)
