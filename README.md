@@ -51,16 +51,14 @@ doStuff = (window) ->
   window.close()
   
 test = new Pane 
-  url: 'http://google.com/' # Alias for setUrl
-  html: '<p>pane test</p>' # Alias for setHtml
-  title: 'Cool test' # Alias for setTitle
-  height: 250 # Alias for setSize
-  width: 250 # Alias for setSize
-  resizable: true # Alias for setResizable
-  plugins: false # Alias for enablePlugins/disablePlugins
-  webgl: true # Alias for enableWebGL/disableWebGL
-  fullscreen: false # Alias for setFullScreen
-  maximized: false # Alias for setMaximized
+  url: 'http://google.com/'
+  html: '<p>pane test</p>'
+  title: 'Cool test'
+  height: 250
+  width: 250
+  resizable: true
+  fullscreen: false
+  maximized: false
   ready: doStuff
   
 ```
