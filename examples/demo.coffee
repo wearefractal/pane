@@ -4,7 +4,6 @@ log.setName 'pane-demo'
 
 doStuff = (window) ->
   window.open()
-  
   log.debug window.getFocused()
   log.debug window.getTitle()
   log.debug window.getUrl()
@@ -13,28 +12,26 @@ doStuff = (window) ->
   
   window.on 'open', -> console.log 'open'
   window.on 'close', -> console.log 'close'
-  window.on 'console', (msg, line, src) -> 
-    console.log "'#{msg}' line #{line} - #{src}"
+  #window.on 'console', (msg, line, src) -> console.log "'#{msg}' line #{line} - #{src}"
   
-  ###
+  
   window.execute 'console.log("test2");'
-  window.execute 'document.writeln("world");'
  
   moveit = -> 
+    console.log 'move'
     window.move 500, 100
     window.execute 'document.writeln(" - i moved!");'
     window.setTitle 'new title heyooo'
     
-  setTimeout moveit, 5000
-  window.open()
+  setTimeout moveit, 1000
   #window.reload()
   #window.close()
-  ###
+  
   
 test = new Pane 
-  url: 'http://nodester.com/nopage'
+  url: 'http://google.com'
   #html: 'hi'
-  #js: "console.log('testi');"
+  js: 'console.log("test1");'
   title: 'Test' # Alias for setTitle
   height: 500 # Alias for setSize
   width: 500 # Alias for setSize

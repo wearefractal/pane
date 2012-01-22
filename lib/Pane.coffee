@@ -16,8 +16,7 @@ class Pane extends EventEmitter
       @window.setUrl url if url?
       @window.setHtml html if html?
       @window.execute js if js?
-      
       ready @window if ready?
-      #@window.start()
+      @window.start()
   
 module.exports = Pane

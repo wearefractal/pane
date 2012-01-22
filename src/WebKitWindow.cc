@@ -85,7 +85,6 @@ Handle<Value> WebKitWindow::RunQT(const Arguments &args)
     assert(window);
     assert(window->app_);
     window->app_->exec();
-    window->Emit("close", 0, NULL);
     return scope.Close(args.This());
 }
 
@@ -102,7 +101,7 @@ Handle<Value> WebKitWindow::Open(const Arguments &args)
          window->window_->show();
     #endif
     window->Emit("open", 0, NULL);
-    window->app_->exec();
+    //window->app_->exec();
     return scope.Close(args.This());
 }
 Handle<Value> WebKitWindow::Close(const Arguments &args)
