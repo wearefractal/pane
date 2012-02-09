@@ -1,8 +1,9 @@
 **pane is a cross-platform QtWebKit binding for node**
 
+Old GTK version: http://registry.npmjs.org/pane/-/pane-0.0.1.tgz
 
 ## Installation
-    
+
 To install pane, use [npm](http://github.com/isaacs/npm):
 
     $ npm install pane
@@ -18,19 +19,19 @@ A full installer for each OS will be available soon.
 ### Fedora/Red Hat - Untested
 
     Nothing here yet
-    
+
 ### Windows - Untested
 
     Nothing here yet
 
 ### Mac OSX - Untested
     Nothing here yet
-    
+
 ## Usage
 
 ```coffee-script
 Pane = require 'pane'
-  
+
 doStuff = (window) ->
   console.log window.getFocused()
   console.log window.getTitle()
@@ -43,14 +44,14 @@ doStuff = (window) ->
   window.on 'console', (msg, line, src) -> console.log "'#{msg}' line #{line} - #{src}"
 
   window.execute 'console.log("test2");'
-  
+
   window.open()
   window.move 500, 100
   window.reload()
-  
+
   window.close()
-  
-test = new Pane 
+
+test = new Pane
   url: 'http://google.com/'
   html: '<p>pane test</p>'
   title: 'Cool test'
@@ -60,7 +61,7 @@ test = new Pane
   fullscreen: false
   maximized: false
   ready: doStuff
-  
+
 ```
 
 ## Examples
