@@ -57,6 +57,7 @@ Handle<Value> WebKitWindow::New (const Arguments &args)
     WebKitWindow *window = new WebKitWindow();
 
     //Create UI components
+    //QApplication requires argc, argv. v8 doesn't provide these, mock them.
     int argc = 1;
     char **argv = NULL;
 
