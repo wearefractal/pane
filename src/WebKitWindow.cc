@@ -8,7 +8,7 @@ Persistent<FunctionTemplate> WebKitWindow::s_ct;
 
 WebKitWindow::WebKitWindow() {
     //Create UI components
-    int argc = 0;
+    int argc = 1;
     char **argv = NULL;
 
     app_ = new QApplication(argc, argv);

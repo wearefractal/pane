@@ -1,5 +1,5 @@
 {EventEmitter} = require 'events'
-WebKitWindow = require('../WebKitWindow').WebKitWindow
+WebKitWindow = require('../build/Release/WebKitWindow').WebKitWindow
 
 WebKitWindow::[key] = val for key, val of EventEmitter::
 WebKitWindow::initialize = ->
