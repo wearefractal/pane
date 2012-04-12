@@ -1,6 +1,20 @@
-**pane is a cross-platform QtWebKit binding for node**
+## Information
 
-Old GTK version: http://registry.npmjs.org/pane/-/pane-0.0.1.tgz
+<table>
+<tr> 
+<td>Package</td><td>pane</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Cross-platform WebKit binding</td>
+</tr>
+<tr>
+<td>Node Version</td>
+<td>>= 0.6.14</td>
+</tr>
+</table>
+
+Pane allows you to spawn and manipulate webkit windows asynchronously from node. Want to write a desktop app or game in node and HTML5? Use pane!
 
 ## Installation
 
