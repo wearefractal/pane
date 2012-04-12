@@ -19,13 +19,11 @@ using namespace node;
 class WebKitWindow : public ObjectWrap
 {
 public:
-    WebKitWindow() : ObjectWrap() {}
-    ~WebKitWindow() {}
-    static Persistent<FunctionTemplate> s_ct;
     static void Initialize(Handle<Object> target);
 
     /* FUNCTIONS */
-    static Handle<Value> RunQT(const Arguments &args);
+    //static Handle<Value> Init(const Arguments &args);
+    static Handle<Value> ProcessEvents(const Arguments &args);
     static Handle<Value> Open(const Arguments &args);
     static Handle<Value> Close(const Arguments &args);
     static Handle<Value> Reload(const Arguments &args);
@@ -51,7 +49,11 @@ public:
     bool Emit(const char *event, int argc, Handle<Value> argv[]);
 
 private:
+    WebKitWindow(); //: ObjectWrap() {}
+    ~WebKitWindow();// {}
+    static Persistent<FunctionTemplate> s_ct;
     static Handle<Value> New(const Arguments &args);
+
     QApplication *app_;
     QMainWindow *window_;
     QWebView *view_;

@@ -6,6 +6,26 @@ using namespace node;
 
 Persistent<FunctionTemplate> WebKitWindow::s_ct;
 
+WebKitWindow::WebKitWindow() {
+    //Create UI components
+    int argc = 0;
+    char **argv = NULL;
+
+    app_ = new QApplication(argc, argv);
+    app_->setOrganizationName("Fractal");
+    app_->setApplicationName("Pane");
+    window_ = new QMainWindow(0);
+    view_ = new QWebView(window_);
+    window_->setCentralWidget(view_);
+
+    //Signals
+    //connect(view_, SIGNAL(titleChanged(QString)), SLOT(RefreshTitle()));
+}
+
+WebKitWindow::~WebKitWindow() {
+    delete app_;
+}
+
 void WebKitWindow::Initialize(Handle<Object> target)
 {
     HandleScope scope;
@@ -16,7 +36,8 @@ void WebKitWindow::Initialize(Handle<Object> target)
     s_ct->InstanceTemplate()->SetInternalFieldCount(1);
     s_ct->SetClassName(NODE_SYMBOL("WebKitWindow"));
 
-    NODE_SET_PROTOTYPE_METHOD(s_ct, "start", RunQT);
+    //NODE_SET_PROTOTYPE_METHOD(s_ct, "init", Init);
+    NODE_SET_PROTOTYPE_METHOD(s_ct, "processEvents", ProcessEvents);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "close", Close);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "open", Open);
 
@@ -55,37 +76,29 @@ Handle<Value> WebKitWindow::New (const Arguments &args)
     }
 
     WebKitWindow *window = new WebKitWindow();
-
-    //Create UI components
-    //QApplication requires argc, argv. v8 doesn't provide these, mock them.
-    int argc = 1;
-    char **argv = NULL;
-
-    window->app_ = new QApplication(argc, argv);
-    window->app_->setOrganizationName("Fractal");
-    window->app_->setApplicationName("Pane");
-    window->window_ = new QMainWindow(0);
-    window->view_ = new QWebView(window->window_);
-
-    //Signals
-    //connect(window->view_, SIGNAL(titleChanged(QString)), SLOT(RefreshTitle()));
-
-    //Add stuff
-    window->window_->setCentralWidget(window->view_);
     window->Wrap(args.This());
     return scope.Close(args.This());
 }
 
 /* FUNCTIONS */
-//TODO: FIX THIS
-Handle<Value> WebKitWindow::RunQT(const Arguments &args)
+/*
+Handle<Value> WebKitWindow::Init(const Arguments &args)
 {
-    //TEST
     HandleScope scope;
     WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
     assert(window);
     assert(window->app_);
     window->app_->exec();
+    return scope.Close(args.This());
+}
+*/
+Handle<Value> WebKitWindow::ProcessEvents(const Arguments &args)
+{
+    HandleScope scope;
+    WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
+    assert(window);
+    assert(window->app_);
+    window->app_->processEvents();
     return scope.Close(args.This());
 }
 
@@ -102,7 +115,6 @@ Handle<Value> WebKitWindow::Open(const Arguments &args)
          window->window_->show();
     #endif
     window->Emit("open", 0, NULL);
-    //window->app_->exec();
     return scope.Close(args.This());
 }
 Handle<Value> WebKitWindow::Close(const Arguments &args)

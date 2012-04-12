@@ -1,7 +1,7 @@
 {
    "name":"pane",
    "description":"WebKit UI for node",
-   "version":"0.0.2",
+   "version":"0.0.3",
    "homepage":"http://github.com/wearefractal/pane",
    "repository":"git://github.com/wearefractal/pane.git",
    "author":"Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
@@ -11,14 +11,15 @@
       "coffee-script":"*"
    },
    "devDependencies":{
-      "node-log":"*"
+      "node-log":"*",
+      "threads_a_gogo":"*"
    },
    "engines":{
-      "node":">= 0.5.0"
+      "node":">= 0.5.1"
    },
    "scripts":{
         "install": "node-waf configure build",
-        "test": "node-waf configure build && spex run"
+        "test": "node-waf configure build && mocha"
   },
    "licenses":[
       {
