@@ -17,7 +17,8 @@
       "node":">=0.6.14"
    },
    "scripts":{
-      "install":"node-gyp rebuild"
+      "install":"node-waf configure build",
+      "alt":"node-gyp rebuild"
   },
    "licenses":[
       {

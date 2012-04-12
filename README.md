@@ -25,6 +25,7 @@ A full installer for each OS will be available soon.
     Nothing here yet
 
 ### Mac OSX - Untested
+
     Nothing here yet
 
 ## Usage
@@ -32,35 +33,26 @@ A full installer for each OS will be available soon.
 ```coffee-script
 Pane = require 'pane'
 
-doStuff = (window) ->
-  console.log window.getFocused()
-  console.log window.getTitle()
-  console.log window.getUrl()
-  console.log window.getSize()
-  console.log window.getResizable()
+opt =
+  title: 'Test'
+  height: 500
+  width: 500
+  html: 'Hello world!'
 
-  window.on 'open', -> console.log 'open'
-  window.on 'close', -> console.log 'close'
-  window.on 'console', (msg, line, src) -> console.log "'#{msg}' line #{line} - #{src}"
-
-  window.execute 'console.log("test2");'
+test = new Pane opt, (window) ->
+  window.on 'open', -> console.log 'opened!'
+  window.on 'close', -> process.exit()
 
   window.open()
-  window.move 500, 100
-  window.reload()
+  window.execute 'console.log("test2");'
 
-  window.close()
+  move = ->
+    console.log 'move'
+    window.move 500, 100
+    window.execute 'document.writeln(" - i moved!");'
+    window.setTitle 'new title heyooo'
 
-test = new Pane
-  url: 'http://google.com/'
-  html: '<p>pane test</p>'
-  title: 'Cool test'
-  height: 250
-  width: 250
-  resizable: true
-  fullscreen: false
-  maximized: false
-  ready: doStuff
+  setTimeout move, 1000
 
 ```
 
