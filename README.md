@@ -26,21 +26,9 @@ To install pane, use [npm](http://github.com/isaacs/npm):
 
 A full installer for each OS will be available soon.
 
-### Ubuntu/Debian
+### Ubuntu
 
     $ sudo apt-get install -y libqtwebkit-dev
-
-### Fedora/Red Hat - Untested
-
-    Nothing here yet
-
-### Windows - Untested
-
-    Nothing here yet
-
-### Mac OSX - Untested
-
-    Nothing here yet
 
 ## Usage
 

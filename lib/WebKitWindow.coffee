@@ -3,8 +3,10 @@ WebKitWindow = require('../build/Release/WebKitWindow').WebKitWindow
 
 WebKitWindow::[key] = val for key, val of EventEmitter::
 WebKitWindow::initialize = ->
-  fn = => @processEvents()
-  setInterval fn, 0
+  fn = => 
+    @processEvents()
+    process.nextTick fn
+  process.nextTick fn
 WebKitWindow::resize = WebKitWindow::setSize
 
 module.exports = WebKitWindow
