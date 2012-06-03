@@ -29,6 +29,7 @@ public:
     static Handle<Value> Reload(const Arguments &args);
     static Handle<Value> Move(const Arguments &args);
     static Handle<Value> SetMaximized(const Arguments &args);
+    static Handle<Value> SetMinimized(const Arguments &args);
     static Handle<Value> SetFullscreen(const Arguments &args);
     static Handle<Value> SetUrl(const Arguments &args);
     static Handle<Value> GetUrl(const Arguments &args);

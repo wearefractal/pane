@@ -41,21 +41,17 @@ opt =
   width: 500
   html: 'Hello world!'
 
-test = new Pane opt, (window) ->
-  window.on 'open', -> console.log 'opened!'
-  window.on 'close', -> process.exit()
+window = new Pane opt
 
-  window.open()
-  window.execute 'console.log("test2");'
+window.on 'open', -> console.log 'opened!'
+window.on 'close', -> process.exit()
 
-  move = ->
-    console.log 'move'
-    window.move 500, 100
-    window.execute 'document.writeln(" - i moved!");'
-    window.setTitle 'new title heyooo'
+window.open()
 
-  setTimeout move, 1000
-
+window.execute 'console.log("test2");'
+window.move 500, 100
+window.execute 'document.writeln(" - i moved!");'
+window.setTitle 'new title heyooo'
 ```
 
 ## Examples

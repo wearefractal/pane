@@ -45,6 +45,7 @@ void WebKitWindow::Initialize(Handle<Object> target)
     NODE_SET_PROTOTYPE_METHOD(s_ct, "move", Move);
 
     NODE_SET_PROTOTYPE_METHOD(s_ct, "setMaximized", SetMaximized);
+    NODE_SET_PROTOTYPE_METHOD(s_ct, "setMinimized", SetMinimized);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "setFullscreen", SetFullscreen);
 
     NODE_SET_PROTOTYPE_METHOD(s_ct, "setUrl", SetUrl);
@@ -92,19 +93,21 @@ Handle<Value> WebKitWindow::Init(const Arguments &args)
     return scope.Close(args.This());
 }
 */
+
 Handle<Value> WebKitWindow::ProcessEvents(const Arguments &args)
 {
     HandleScope scope;
     WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
     assert(window);
     assert(window->app_);
-    window->app_->processEvents();
+    if(window->app_->hasPendingEvents()){
+        window->app_->processEvents();
+    }
     return scope.Close(args.This());
 }
 
 Handle<Value> WebKitWindow::Open(const Arguments &args)
 {
-    //TEST
     HandleScope scope;
     WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
     assert(window);
@@ -122,7 +125,8 @@ Handle<Value> WebKitWindow::Close(const Arguments &args)
     HandleScope scope;
     WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
     assert(window);
-    assert(window->app_);
+    assert(window->window_);
+    window->window_->close();
     window->app_->exit(0);
     window->Emit("close", 0, NULL);
     return scope.Close(args.This());
@@ -160,6 +164,24 @@ Handle<Value> WebKitWindow::SetMaximized(const Arguments &args)
     if (maximized)
     {
         window->window_->showMaximized();
+    }
+    else
+    {
+        window->window_->showNormal();
+    }
+    return scope.Close(args.This());
+}
+Handle<Value> WebKitWindow::SetMinimized(const Arguments &args)
+{
+    HandleScope scope;
+    WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
+    assert(window);
+    assert(window->window_);
+    ARG_CHECK_BOOL(0, minimized);
+    bool minimized = args[0]->BooleanValue();
+    if (minimized)
+    {
+        window->window_->showMinimized();
     }
     else
     {
@@ -258,7 +280,7 @@ Handle<Value> WebKitWindow::SetSize(const Arguments &args)
     ARG_CHECK_UINT32(1, width);
     int height = args[0]->ToInteger()->Value();
     int width = args[1]->ToInteger()->Value();
-    window->window_->resize(height, width);
+    window->window_->resize(width, height);
     return scope.Close(args.This());
 }
 Handle<Value> WebKitWindow::GetSize(const Arguments &args)

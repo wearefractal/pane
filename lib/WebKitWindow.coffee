@@ -3,7 +3,7 @@ WebKitWindow = require('../build/Release/WebKitWindow').WebKitWindow
 
 WebKitWindow::[key] = val for key, val of EventEmitter::
 WebKitWindow::initialize = ->
-  fn = => 
+  fn = =>
     @processEvents()
     process.nextTick fn
   fn()
