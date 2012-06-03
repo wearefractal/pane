@@ -6,7 +6,8 @@ WebKitWindow::initialize = ->
   fn = => 
     @processEvents()
     process.nextTick fn
-  process.nextTick fn
+  fn()
+
 WebKitWindow::resize = WebKitWindow::setSize
 
 module.exports = WebKitWindow
