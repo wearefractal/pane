@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pane by wearefractal</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Pane</h1>
+        <p>WebKit UI for node.js</p>
+        <p class="view"><a href="https://github.com/wearefractal/pane">View the Project on GitHub <small>wearefractal/pane</small></a></p>
+        <ul>
+          <li><a href="https://github.com/wearefractal/pane/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/wearefractal/pane/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/wearefractal/pane">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>Information</h2>
+
+<table>
+<tr>
+<td>Package</td>
+<td>pane</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Cross-platform WebKit binding</td>
+</tr>
+<tr>
+<td>Node Version</td>
+<td>&gt;= 0.6.14</td>
+</tr>
+</table><p>Pane allows you to spawn and manipulate webkit windows asynchronously from node. Want to write a desktop app or game in node and HTML5? Use pane!</p>
+
+<h2>Installation</h2>
+
+<p>To install pane, use <a href="http://github.com/isaacs/npm">npm</a>:</p>
+
+<pre><code>$ npm install pane
+</code></pre>
+
+<h2>Dependencies</h2>
+
+<p>A full installer for each OS will be available soon.</p>
+
+<h3>Ubuntu</h3>
+
+<pre><code>$ sudo apt-get install -y libqtwebkit-dev
+</code></pre>
+
+<h2>Usage</h2>
+
+<div class="highlight">
+<pre><span class="nv">Pane = </span><span class="nx">require</span> <span class="s">'pane'</span>
+
+<span class="nv">opt =</span>
+  <span class="nv">title: </span><span class="s">'Test'</span>
+  <span class="nv">height: </span><span class="mi">500</span>
+  <span class="nv">width: </span><span class="mi">500</span>
+  <span class="nv">html: </span><span class="s">'Hello world!'</span>
+
+<span class="nb">window</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pane</span> <span class="nx">opt</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="kc">on</span> <span class="s">'open'</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">'opened!'</span>
+<span class="nb">window</span><span class="p">.</span><span class="kc">on</span> <span class="s">'close'</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">execute</span> <span class="s">'console.log("test2");'</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">move</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">100</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">execute</span> <span class="s">'document.writeln(" - i moved!");'</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">setTitle</span> <span class="s">'new title heyooo'</span>
+</pre>
+</div>
+
+
+<h2>Examples</h2>
+
+<p><img src="http://i.imgur.com/QSQNu.png" alt="wat"></p>
+
+<p>You can view further examples in the <a href="https://github.com/wearefractal/pane/tree/master/examples">example folder.</a></p>
+
+<h2>LICENSE</h2>
+
+<p>(MIT License)</p>
+
+<p>Copyright (c) 2011 Fractal <a href="mailto:contact@wearefractal.com">contact@wearefractal.com</a></p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/wearefractal">wearefractal</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
