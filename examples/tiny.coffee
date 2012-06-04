@@ -10,7 +10,8 @@ opt =
 
 window = new Pane opt
 
-#window.on 'close', process.exit
+window.on 'console', (msg, line, src) -> console.log msg, line, src
 
 window.open()
-setTimeout (->window.close()), 2000
+window.execute 'console.log("hay");'
+console.log window.execute 'document.location.href'

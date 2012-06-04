@@ -18,7 +18,7 @@ log.debug window.resizable()
 
 window.on 'open', -> console.log 'open'
 window.on 'close', -> process.exit()
-#window.on 'console', (msg, line, src) -> console.log "'#{msg}' line #{line} - #{src}"
+window.on 'console', (msg, line, src) -> console.log "'#{msg}' line #{line} - #{src}"
 
 window.open()
 window.execute 'console.log("test2");'

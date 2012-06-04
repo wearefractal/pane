@@ -1,5 +1,5 @@
 #include "WebKitWindow.h"
-#include <stdio.h>
+#include "HookedPage.h"
 
 using namespace v8;
 using namespace node;
@@ -16,14 +16,21 @@ WebKitWindow::WebKitWindow() {
     app_->setApplicationName("Pane");
     window_ = new QMainWindow(0);
     view_ = new QWebView(window_);
+    page_ = new HookedPage(this, view_);
+    view_->setPage(page_);
     window_->setCentralWidget(view_);
 
     view_->settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
     view_->settings()->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+
     view_->settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
     view_->settings()->setOfflineWebApplicationCachePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+
     view_->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
     view_->settings()->setLocalStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+
+    view_->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    view_->settings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
 }
 
 WebKitWindow::~WebKitWindow() {
@@ -258,8 +265,8 @@ Handle<Value> WebKitWindow::ExecuteScript(const Arguments &args)
     assert(window->view_);
     ARG_CHECK_STRING(0, script);
     String::Utf8Value script(args[0]->ToString());
-    window->view_->page()->mainFrame()->evaluateJavaScript(*script);
-    return scope.Close(args.This());
+    QString out = window->view_->page()->mainFrame()->evaluateJavaScript(*script).toString();
+    return scope.Close(NODE_SYMBOL(out.toAscii()));
 }
 Handle<Value> WebKitWindow::SetSize(const Arguments &args)
 {
@@ -319,6 +326,16 @@ Handle<Value> WebKitWindow::GetFocused(const Arguments &args)
     assert(window->window_);
     bool focused = window->window_->hasFocus();
     return scope.Close(Boolean::New(focused));
+}
+
+void WebKitWindow::ConsoleMessage(const QString &message, int line, const QString &source)
+{
+    HandleScope scope;
+    Handle<Value> args[3];
+    args[0] = NODE_SYMBOL(message.toAscii());
+    args[1] = NODE_CONSTANT(line);
+    args[2] = NODE_SYMBOL(source.toAscii());
+    Emit("console", 3, args);
 }
 
 /* MISC */

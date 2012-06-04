@@ -20,7 +20,9 @@ Pane allows you to spawn and manipulate webkit windows asynchronously from node.
 
 To install pane, use [npm](http://github.com/isaacs/npm):
 
-    $ npm install pane
+```
+$ npm install pane
+```
 
 ## Dependencies
 
@@ -28,7 +30,15 @@ A full installer for each OS will be available soon.
 
 ### Ubuntu
 
-    $ sudo apt-get install -y libqtwebkit-dev
+```
+$ sudo apt-get install -y libqtwebkit-dev
+```
+
+### Arch Linux
+
+```
+$ sudo pacman -S qtwebkit
+```
 
 ## Usage
 
@@ -45,6 +55,7 @@ window = new Pane opt
 
 window.on 'open', -> console.log 'opened!'
 window.on 'close', -> process.exit()
+window.on 'console', (msg, line, file) -> console.log msg, line, file
 
 window.open()
 
@@ -52,6 +63,7 @@ window.execute 'console.log("test2");'
 window.move 500, 100
 window.execute 'document.writeln(" - i moved!");'
 window.setTitle 'new title heyooo'
+console.log window.execute 'document.location.href'
 ```
 
 ## Examples
