@@ -11,10 +11,10 @@ opt =
 window = new Pane opt
 
 log.debug window.getFocused()
-log.debug window.getTitle()
-log.debug window.getUrl()
+log.debug window.title()
+log.debug window.url()
 log.debug window.getSize()
-log.debug window.getResizable()
+log.debug window.resizable()
 
 window.on 'open', -> console.log 'open'
 window.on 'close', -> process.exit()
@@ -27,6 +27,6 @@ move = ->
   console.log 'move'
   window.move 500, 100
   window.execute 'document.writeln(" - i moved!");'
-  window.setTitle 'new title heyooo'
+  window.title 'new title heyooo'
 
 setTimeout move, 1000

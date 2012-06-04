@@ -22,7 +22,6 @@ public:
     static void Initialize(Handle<Object> target);
 
     /* FUNCTIONS */
-    //static Handle<Value> Init(const Arguments &args);
     static Handle<Value> ProcessEvents(const Arguments &args);
     static Handle<Value> Open(const Arguments &args);
     static Handle<Value> Close(const Arguments &args);
@@ -43,18 +42,14 @@ public:
     static Handle<Value> GetTitle(const Arguments &args);
     static Handle<Value> GetFocused(const Arguments &args);
 
-    /* SIGNALS */
-    //static void ConsoleMessage(GtkWidget *widget, const gchar *message, unsigned int line, const gchar *sourceId, WebKitWindow *window);
-    static void RefreshTitle(WebKitWindow *window);
     /* MISC */
     bool Emit(const char *event, int argc, Handle<Value> argv[]);
 
 private:
-    WebKitWindow(); //: ObjectWrap() {}
-    ~WebKitWindow();// {}
+    WebKitWindow();
+    ~WebKitWindow();
     static Persistent<FunctionTemplate> s_ct;
     static Handle<Value> New(const Arguments &args);
-
     QApplication *app_;
     QMainWindow *window_;
     QWebView *view_;

@@ -18,8 +18,12 @@ WebKitWindow::WebKitWindow() {
     view_ = new QWebView(window_);
     window_->setCentralWidget(view_);
 
-    //Signals
-    //connect(view_, SIGNAL(titleChanged(QString)), SLOT(RefreshTitle()));
+    view_->settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
+    view_->settings()->setOfflineStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+    view_->settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
+    view_->settings()->setOfflineWebApplicationCachePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+    view_->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
+    view_->settings()->setLocalStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
 }
 
 WebKitWindow::~WebKitWindow() {
@@ -36,7 +40,6 @@ void WebKitWindow::Initialize(Handle<Object> target)
     s_ct->InstanceTemplate()->SetInternalFieldCount(1);
     s_ct->SetClassName(NODE_SYMBOL("WebKitWindow"));
 
-    //NODE_SET_PROTOTYPE_METHOD(s_ct, "init", Init);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "processEvents", ProcessEvents);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "close", Close);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "open", Open);
@@ -82,18 +85,6 @@ Handle<Value> WebKitWindow::New (const Arguments &args)
 }
 
 /* FUNCTIONS */
-/*
-Handle<Value> WebKitWindow::Init(const Arguments &args)
-{
-    HandleScope scope;
-    WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
-    assert(window);
-    assert(window->app_);
-    window->app_->exec();
-    return scope.Close(args.This());
-}
-*/
-
 Handle<Value> WebKitWindow::ProcessEvents(const Arguments &args)
 {
     HandleScope scope;
@@ -330,35 +321,9 @@ Handle<Value> WebKitWindow::GetFocused(const Arguments &args)
     return scope.Close(Boolean::New(focused));
 }
 
-/* SIGNAL HANDLING */
-/*
-void WebKitWindow::ConsoleMessage(WebKitWindow *window)
-{
-    //TODO
-    HandleScope scope;
-    assert(window);
-    assert(window->window_);
-    Handle<Value> args[3];
-    args[0] = NODE_SYMBOL(message);
-    args[1] = NODE_CONSTANT(line);
-    args[2] = NODE_SYMBOL(source);
-    window->Emit("console", 3, args);
-}
-*/
-void WebKitWindow::RefreshTitle(WebKitWindow *window)
-{
-    //TODO IMPLEMENT
-    HandleScope scope;
-    assert(window);
-    assert(window->window_);
-    assert(window->view_);
-    window->window_->setWindowTitle(window->view_->title());
-}
-
 /* MISC */
 bool WebKitWindow::Emit(const char *event, int argCount, Handle<Value> emitArgs[])
 {
-    //return true; //Temporarily disabled
     HandleScope scope;
 
     //Format arguments to pass to v8::Function
@@ -413,6 +378,5 @@ extern "C" {
         HandleScope scope;
         WebKitWindow::Initialize(target);
     }
-
     NODE_MODULE(WebKitWindow, init);
 }
