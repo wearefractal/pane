@@ -116,7 +116,7 @@ Handle<Value> WebKitWindow::Show(const Arguments &args)
     #else
          window->window_->show();
     #endif
-    window->Emit("show", 0, NULL);
+    window->Emit("open", 0, NULL);
     return scope.Close(args.This());
 }
 Handle<Value> WebKitWindow::Close(const Arguments &args)
@@ -235,7 +235,7 @@ Handle<Value> WebKitWindow::GetTitle(const Arguments &args)
     WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
     assert(window);
     assert(window->window_);
-    const char *title = CString(window->view_->windowTitle());
+    const char *title = CString(window->window_->windowTitle());
     return scope.Close(NODE_SYMBOL(title));
 }
 Handle<Value> WebKitWindow::SetUrl(const Arguments &args)
