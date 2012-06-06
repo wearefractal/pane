@@ -8,6 +8,10 @@ WebKitWindow::initialize = ->
     process.nextTick fn
   fn()
 
+WebKitWindow::open = (cb) ->
+  @once 'loaded', cb if cb?
+  @show()
+
 WebKitWindow::resize = WebKitWindow::setSize
 WebKitWindow::maximize = (b=true) -> @setMaximized b
 WebKitWindow::minimize = (b=true) -> @setMinimized b

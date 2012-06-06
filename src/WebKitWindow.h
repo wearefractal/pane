@@ -23,10 +23,11 @@ class WebKitWindow : public ObjectWrap {
 
       /* FUNCTIONS */
       static Handle<Value> ProcessEvents(const Arguments &args);
-      static Handle<Value> Open(const Arguments &args);
+      static Handle<Value> Show(const Arguments &args);
       static Handle<Value> Close(const Arguments &args);
       static Handle<Value> Reload(const Arguments &args);
       static Handle<Value> Move(const Arguments &args);
+      static Handle<Value> Screenshot(const Arguments &args);
       static Handle<Value> SetMaximized(const Arguments &args);
       static Handle<Value> SetMinimized(const Arguments &args);
       static Handle<Value> SetFullscreen(const Arguments &args);
@@ -43,6 +44,7 @@ class WebKitWindow : public ObjectWrap {
       static Handle<Value> GetFocused(const Arguments &args);
 
       /* MISC */
+      void PageLoaded(bool success);
       void ConsoleMessage(const QString &message, int line, const QString &source);
       bool Emit(const char *event, int argc, Handle<Value> argv[]);
 

@@ -61,9 +61,11 @@ window.open()
 
 window.execute 'console.log("test2");'
 window.move 500, 100
-window.execute 'document.writeln(" - i moved!");'
-window.setTitle 'new title heyooo'
+window.html 'i moved!'
+window.title 'new title heyooo'
 console.log window.execute 'document.location.href'
+
+window.screenshot 'test.png'
 ```
 
 ## Examples

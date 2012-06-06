@@ -49,10 +49,11 @@ void WebKitWindow::Initialize(Handle<Object> target)
 
     NODE_SET_PROTOTYPE_METHOD(s_ct, "processEvents", ProcessEvents);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "close", Close);
-    NODE_SET_PROTOTYPE_METHOD(s_ct, "open", Open);
+    NODE_SET_PROTOTYPE_METHOD(s_ct, "show", Show);
 
     NODE_SET_PROTOTYPE_METHOD(s_ct, "reload", Reload);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "move", Move);
+    NODE_SET_PROTOTYPE_METHOD(s_ct, "screenshot", Screenshot);
 
     NODE_SET_PROTOTYPE_METHOD(s_ct, "setMaximized", SetMaximized);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "setMinimized", SetMinimized);
@@ -104,7 +105,7 @@ Handle<Value> WebKitWindow::ProcessEvents(const Arguments &args)
     return scope.Close(args.This());
 }
 
-Handle<Value> WebKitWindow::Open(const Arguments &args)
+Handle<Value> WebKitWindow::Show(const Arguments &args)
 {
     HandleScope scope;
     WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
@@ -115,7 +116,7 @@ Handle<Value> WebKitWindow::Open(const Arguments &args)
     #else
          window->window_->show();
     #endif
-    window->Emit("open", 0, NULL);
+    window->Emit("show", 0, NULL);
     return scope.Close(args.This());
 }
 Handle<Value> WebKitWindow::Close(const Arguments &args)
@@ -149,6 +150,17 @@ Handle<Value> WebKitWindow::Move(const Arguments &args)
     int x = args[0]->Int32Value();
     int y = args[1]->Int32Value();
     window->window_->move(x, y);
+    return scope.Close(args.This());
+}
+Handle<Value> WebKitWindow::Screenshot(const Arguments &args)
+{
+    HandleScope scope;
+    WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());
+    assert(window);
+    assert(window->view_);
+    ARG_CHECK_STRING(0, title);
+    String::Utf8Value title(args[0]->ToString());
+    window->page_->screenshot(QString(*title));
     return scope.Close(args.This());
 }
 Handle<Value> WebKitWindow::SetMaximized(const Arguments &args)
@@ -328,6 +340,14 @@ Handle<Value> WebKitWindow::GetFocused(const Arguments &args)
     return scope.Close(Boolean::New(focused));
 }
 
+/* Events */
+void WebKitWindow::PageLoaded(bool success)
+{
+    HandleScope scope;
+    Handle<Value> args[1];
+    args[0] = Boolean::New(success);
+    Emit("loaded", 1, args);
+}
 void WebKitWindow::ConsoleMessage(const QString &message, int line, const QString &source)
 {
     HandleScope scope;
