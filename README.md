@@ -34,6 +34,12 @@ A full installer for each OS will be available soon.
 $ sudo apt-get install -y libqtwebkit-dev
 ```
 
+### OSX
+
+```
+$ brew install qt
+```
+
 ### Arch Linux
 
 ```
