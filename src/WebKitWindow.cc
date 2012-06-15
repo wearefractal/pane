@@ -265,8 +265,14 @@ Handle<Value> WebKitWindow::SetHtml(const Arguments &args)
     assert(window);
     assert(window->view_);
     ARG_CHECK_STRING(0, html);
+    ARG_CHECK_OPTIONAL_STRING(1, baseUrl);
     String::Utf8Value html(args[0]->ToString());
-    window->view_->setHtml(QString(*html), QUrl("file:///"));
+    if (args.Length() > 1) {
+        String::Utf8Value baseUrl(args[1]->ToString());
+        window->view_->setHtml(QString(*html), QUrl(*baseUrl));
+    } else {
+        window->view_->setHtml(QString(*html), QUrl("file:///"));
+    }
     return scope.Close(args.This());
 }
 Handle<Value> WebKitWindow::ExecuteScript(const Arguments &args)

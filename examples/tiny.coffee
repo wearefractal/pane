@@ -17,3 +17,4 @@ console.log window.execute '1+1'
 window.open ->
   console.log 'page loaded'
   window.screenshot __dirname + '/test.png'
+  window.html 'test', 'http://localhost'

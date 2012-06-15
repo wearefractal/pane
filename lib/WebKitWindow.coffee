@@ -19,6 +19,6 @@ WebKitWindow::fullscreen = (b=true) -> @setFullscreen b
 WebKitWindow::resizable = (b) -> (if b then @setResizable b else @getResizable())
 WebKitWindow::title = (str) -> (if str then @setTitle str else @getTitle())
 WebKitWindow::url = (str) -> (if str then @setUrl str else @getUrl())
-WebKitWindow::html = (str) -> (if str then @setHtml str else @getHtml())
+WebKitWindow::html = (str, base) -> (if str then @setHtml str, base else @getHtml())
 
 module.exports = WebKitWindow

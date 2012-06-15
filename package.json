@@ -1,7 +1,7 @@
 {
    "name":"pane",
    "description":"WebKit UI for node",
-   "version":"0.0.9",
+   "version":"0.0.10",
    "homepage":"http://github.com/wearefractal/pane",
    "repository":"git://github.com/wearefractal/pane.git",
    "author":"Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
