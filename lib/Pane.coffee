@@ -8,7 +8,7 @@ class Pane extends EventEmitter
     @window.initialize()
 
     if opt?
-      {js, html, url, height, width, resizable, title, fullscreen, maximized, minimized} = opt
+      {js, html, baseUrl, url, height, width, resizable, title, fullscreen, maximized, minimized} = opt
       @window.resize height, width if height? and width?
       @window.maximize maximized if maximized?
       @window.minimize minimized if minimized?
@@ -17,7 +17,8 @@ class Pane extends EventEmitter
       @window.title title if title?
 
       @window.url url if url?
-      @window.html html if html?
+      @window.html html, baseUrl if html? and baseUrl?
+      @window.html html if html? and not baseUrl?
       @window.execute js if js?
     @window.processEvents()
     return @window
