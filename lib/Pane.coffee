@@ -4,7 +4,6 @@ WebKitWindow = require './WebKitWindow'
 class Pane extends EventEmitter
   constructor: (opt) ->
     @window = new WebKitWindow
-    @window.processEvents()
     @window.initialize()
 
     if opt?
@@ -19,7 +18,6 @@ class Pane extends EventEmitter
       @window.url url if url?
       @window.html html if html?
       @window.execute js if js?
-    @window.processEvents()
     return @window
 
 module.exports = Pane

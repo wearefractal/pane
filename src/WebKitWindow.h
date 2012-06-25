@@ -23,7 +23,7 @@ class WebKitWindow : public ObjectWrap {
 
       /* FUNCTIONS */
       static Handle<Value> ProcessEvents(const Arguments &args);
-      static Handle<Value> Show(const Arguments &args);
+      static Handle<Value> Open(const Arguments &args);
       static Handle<Value> Close(const Arguments &args);
       static Handle<Value> Reload(const Arguments &args);
       static Handle<Value> Move(const Arguments &args);

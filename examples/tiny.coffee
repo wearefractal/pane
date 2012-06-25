@@ -14,7 +14,8 @@ window.on 'console', (msg, line, src) -> console.log msg, line, src
 window.execute 'console.log("hay");'
 console.log window.execute '1+1'
 
-window.open ->
-  console.log 'page loaded'
+window.open()
+
+window.on 'loaded', (succ) ->
   window.screenshot __dirname + '/test.png'
-  window.html 'test', 'http://localhost'
+  #window.html 'test', 'http://localhost'

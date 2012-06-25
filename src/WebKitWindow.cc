@@ -29,7 +29,7 @@ WebKitWindow::WebKitWindow() {
     view_->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
     view_->settings()->setLocalStoragePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
 
-    view_->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    view_->settings()->setAttribute(QWebSettings::PluginsEnabled, false);
     view_->settings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
 }
 
@@ -49,7 +49,7 @@ void WebKitWindow::Initialize(Handle<Object> target)
 
     NODE_SET_PROTOTYPE_METHOD(s_ct, "processEvents", ProcessEvents);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "close", Close);
-    NODE_SET_PROTOTYPE_METHOD(s_ct, "show", Show);
+    NODE_SET_PROTOTYPE_METHOD(s_ct, "open", Open);
 
     NODE_SET_PROTOTYPE_METHOD(s_ct, "reload", Reload);
     NODE_SET_PROTOTYPE_METHOD(s_ct, "move", Move);
@@ -89,6 +89,7 @@ Handle<Value> WebKitWindow::New (const Arguments &args)
 
     WebKitWindow *window = new WebKitWindow();
     window->Wrap(args.This());
+    window->app_->processEvents();
     return scope.Close(args.This());
 }
 
@@ -100,12 +101,12 @@ Handle<Value> WebKitWindow::ProcessEvents(const Arguments &args)
     assert(window);
     assert(window->app_);
     if(window->app_->hasPendingEvents()){
-        window->app_->processEvents();
+      window->app_->processEvents();
     }
     return scope.Close(args.This());
 }
 
-Handle<Value> WebKitWindow::Show(const Arguments &args)
+Handle<Value> WebKitWindow::Open(const Arguments &args)
 {
     HandleScope scope;
     WebKitWindow *window = ObjectWrap::Unwrap<WebKitWindow>(args.This());

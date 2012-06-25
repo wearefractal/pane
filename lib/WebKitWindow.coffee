@@ -2,15 +2,12 @@
 WebKitWindow = require('../build/Release/WebKitWindow').WebKitWindow
 
 WebKitWindow::[key] = val for key, val of EventEmitter::
+
 WebKitWindow::initialize = ->
-  fn = =>
+  fn = => 
     @processEvents()
     process.nextTick fn
   fn()
-
-WebKitWindow::open = (cb) ->
-  @once 'loaded', cb if cb?
-  @show()
 
 WebKitWindow::resize = WebKitWindow::setSize
 WebKitWindow::maximize = (b=true) -> @setMaximized b

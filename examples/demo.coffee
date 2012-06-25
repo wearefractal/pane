@@ -17,7 +17,9 @@ log.debug window.getSize()
 log.debug window.resizable()
 
 window.on 'open', -> console.log 'open'
-window.on 'close', -> process.exit()
+window.on 'close', -> 
+  console.log 'close'
+  process.exit()
 window.on 'console', (msg, line, src) -> console.log "'#{msg}' line #{line} - #{src}"
 
 window.open()
